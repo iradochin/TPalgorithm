@@ -23,6 +23,28 @@
 #include <vector>
 //#include <algorithm>
 
+void medianOfThree (std::vector<int>&, int, int );
+int partition ( std::vector <int> &, int, int );
+int kStat ( std::vector<int>&, int, int, int );
+
+int main ()
+{
+    int n = 0;
+    std::cin >> n;
+    int k = 0;
+    std::cin >> k;
+    std::vector<int> a( n, 0 );
+    for ( int i = 0; i < n ; ++i )
+    {
+        std::cin >> a[i];
+    }
+
+    std::cout << kStat ( a, 0, n - 1, k );
+
+//    nth_element ( a.begin(), a.begin() + k, a.end() );
+//    std::cout << a[k];
+}
+
 void medianOfThree (std::vector<int>& a, int left, int right)
 {
     if ( a[( left + right ) / 2] > a[right] )
@@ -38,27 +60,42 @@ int partition ( std::vector <int> &a, int left, int right )
     medianOfThree( a, left, right );
     int i = right;
     int j = right;
+    int flag = 0;
 
     while ( j > left )
     {
-        if ( a[j] < a[left] )
+        while ( a[left] == a[j] && j > left )
+        {
+            if ( flag % 2 )
+            {
+                std::swap(a[i], a[j]);
+                --i;
+                --j;
+            }
+            else
+            {
+                --j;
+            }
+            flag++;
+        }
+
+        while ( a[j] < a[left] && j > left )
             --j;
-        else
+
+        while ( a[j] > a[left] && j > left )
         {
             std::swap( a[j], a[i] );
             --i;
             --j;
         }
     }
-
     std::swap ( a[left], a[i] );
+
     return i;
 }
 
 int kStat ( std::vector<int>& a, int left, int right, int k )
 {
-    char bla;
-
     int l = left;
     int r = right;
     int p = -1;
@@ -66,33 +103,10 @@ int kStat ( std::vector<int>& a, int left, int right, int k )
     {
         p = partition ( a, l, r );
         if ( p < k )
-        {
             l = p + 1;
-        }
         else
-        {
             r = p - 1;
-        }
     }
 
     return a[k];
     }
-
-int main ()
-{
-    int n = 0;
-    std::cin >> n;
-    int k = 0;
-    std::cin >> k;
-
-    std::vector<int> a( n, 0 );
-    for ( int i = 0; i < n ; ++i )
-    {
-        std::cin >> a[i];
-    }
-
-    std::cout << kStat ( a, 0, n - 1, k );
-
-//    nth_element ( a.begin(), a.begin() + k, a.end() );
-//    std::cout << a[k];
-}
