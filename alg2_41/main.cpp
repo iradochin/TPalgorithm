@@ -26,64 +26,12 @@
 #include <vector>
 #include <stdint.h>
 
+int binarySearch( std::vector<int>&, int, int ,int );
+void mergeK ( std::vector<int>&, int, size_t );
+//void quick_sort_three_parts ( std::vector<int>&, int, int );
+void quickSort(std::vector<int>&, int, int );
 //void merge( std::vector<int> &, int, int, int );
 //void merge_sort( std::vector<int> &, int, int );
-
-void merge( std::vector<int> &mas, int l, int m, int r )
-{
-    std::vector<int> buffer( r - l + 1 );
-    int pos1 = l;
-    int pos2 = m + 1;
-    int posB = 0;
-    while ( pos1 <= m && pos2 <= r ) {
-        if ( mas[pos1] <= mas[pos2] )
-            buffer[posB++] = mas[pos1++];
-        else
-            buffer[posB++] = mas[pos2++];
-    }
-    while ( pos1 <= m )
-        buffer[posB ++] = mas[pos1 ++];
-    while ( pos2 <= r )
-        buffer[posB ++] = mas[pos2 ++];
-    std::copy( buffer.begin(), buffer.end(), (mas.begin() + l) );
-}
-
-void merge_sort( std::vector<int> &mas, int l, int r )
-{
-    int m = ( l + r ) >> 1;
-    if (l == r) return;
-    merge_sort( mas, l, m );
-    merge_sort( mas, (m + 1), r );
-    merge( mas, l, m, r );
-}
-
-void mergeK ( std::vector<int>&, int, size_t );
-void quick_sort_three_parts ( std::vector<int>&, int, int );
-int binarySearch( std::vector<int>&, int, int ,int );
-
-void quickSort(std::vector<int>& a, int l, int r)
-{
-    int x = a[l + (r - l) / 2];
-    int i = l;
-    int j = r;
-    while(i <= j)
-    {
-        while(a[i] < x) i++;
-        while(a[j] > x) j--;
-        if(i <= j)
-        {
-            std::swap(a[i], a[j]);
-            i++;
-            j--;
-        }
-    }
-
-    if (i<r)
-        quickSort(a, i, r);
-
-    if (l<j)
-        quickSort(a, l, j);
-}
 
 int main()
 {
@@ -99,6 +47,7 @@ int main()
         std::cin >> a[i];
     }
 
+//    merge_sort ( a, 0, numOut - 1 )
 //    quick_sort_three_parts( a, 0, numOut - 1 );
     quickSort( a, 0, numOut - 1 );
 
@@ -125,6 +74,47 @@ void mergeK ( std::vector<int>&a, int k, size_t place )
         std::swap( a[place], k );
         ++place;
     }
+}
+
+int binarySearch( std::vector<int>& a, int key, int left ,int right)
+{
+    while ( left < right )
+    {
+        int mid = left + (right - left) / 2;
+
+        if (a[mid] == key)
+            return mid;
+
+        if (a[mid] > key)
+            right = mid;
+        else
+            left = mid + 1;
+    }
+    return right;
+}
+
+void quickSort(std::vector<int>& a, int l, int r)
+{
+    int x = a[l + (r - l) / 2];
+    int i = l;
+    int j = r;
+    while(i <= j)
+    {
+        while(a[i] < x) i++;
+        while(a[j] > x) j--;
+        if(i <= j)
+        {
+            std::swap(a[i], a[j]);
+            i++;
+            j--;
+        }
+    }
+
+    if (i<r)
+        quickSort(a, i, r);
+
+    if (l<j)
+        quickSort(a, l, j);
 }
 
 void quick_sort_three_parts ( std::vector<int>& a, int l, int r )
@@ -166,19 +156,30 @@ void quick_sort_three_parts ( std::vector<int>& a, int l, int r )
     quick_sort_three_parts ( a, i, r );
 }
 
-int binarySearch( std::vector<int>& a, int key, int left ,int right)
+void merge( std::vector<int> &mas, int l, int m, int r )
 {
-    while ( left < right )
-    {
-        int mid = left + (right - left) / 2;
-
-        if (a[mid] == key)
-            return mid;
-
-        if (a[mid] > key)
-            right = mid;
+    std::vector<int> buffer( r - l + 1 );
+    int pos1 = l;
+    int pos2 = m + 1;
+    int posB = 0;
+    while ( pos1 <= m && pos2 <= r ) {
+        if ( mas[pos1] <= mas[pos2] )
+            buffer[posB++] = mas[pos1++];
         else
-            left = mid + 1;
+            buffer[posB++] = mas[pos2++];
     }
-    return right;
+    while ( pos1 <= m )
+        buffer[posB ++] = mas[pos1 ++];
+    while ( pos2 <= r )
+        buffer[posB ++] = mas[pos2 ++];
+    std::copy( buffer.begin(), buffer.end(), (mas.begin() + l) );
+}
+
+void merge_sort( std::vector<int> &mas, int l, int r )
+{
+    int m = ( l + r ) >> 1;
+    if (l == r) return;
+    merge_sort( mas, l, m );
+    merge_sort( mas, (m + 1), r );
+    merge( mas, l, m, r );
 }
