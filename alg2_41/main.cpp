@@ -25,8 +25,9 @@
 #include <iostream>
 #include <vector>
 #include <stdint.h>
-#include <algorithm>
 
+//void merge( std::vector<int> &, int, int, int );
+//void merge_sort( std::vector<int> &, int, int );
 
 void merge( std::vector<int> &mas, int l, int m, int r )
 {
@@ -56,21 +57,65 @@ void merge_sort( std::vector<int> &mas, int l, int r )
     merge( mas, l, m, r );
 }
 
-int binarySearch( std::vector<int>& a, int key, int left ,int right)
+void mergeK ( std::vector<int>&, int, size_t );
+void quick_sort_three_parts ( std::vector<int>&, int, int );
+int binarySearch( std::vector<int>&, int, int ,int );
+
+void quickSort(std::vector<int>& a, int l, int r)
 {
-    while (!(left >= right))
+    int x = a[l + (r - l) / 2];
+    int i = l;
+    int j = r;
+    while(i <= j)
     {
-        int mid = left + (right - left) / 2;
-
-        if (a[mid] == key)
-            return mid;
-
-        if (a[mid] > key)
-            right = mid;
-        else
-            left = mid + 1;
+        while(a[i] < x) i++;
+        while(a[j] > x) j--;
+        if(i <= j)
+        {
+            std::swap(a[i], a[j]);
+            i++;
+            j--;
+        }
     }
-    return right;
+
+    if (i<r)
+        quickSort(a, i, r);
+
+    if (l<j)
+        quickSort(a, l, j);
+}
+
+int main()
+{
+    int64_t num;
+    std::cin >> num;
+
+    int numOut;
+    std::cin >> numOut;
+    std::vector <int> a (numOut, 0);
+
+    for ( int i = 0; i < numOut ; ++i )
+    {
+        std::cin >> a[i];
+    }
+
+//    quick_sort_three_parts( a, 0, numOut - 1 );
+    quickSort( a, 0, numOut - 1 );
+
+    int buf;
+    for ( int i = numOut; i < num; ++i )
+    {
+        std::cin >> buf;
+        if ( buf < a[numOut - 1] )
+            mergeK( a, buf, binarySearch(a, buf, 0, numOut ) ) ;
+    }
+
+    for ( int i = 0; i < numOut; ++i)
+    {
+        std::cout << a[i] << " ";
+    }
+
+    return 0;
 }
 
 void mergeK ( std::vector<int>&a, int k, size_t place )
@@ -121,50 +166,19 @@ void quick_sort_three_parts ( std::vector<int>& a, int l, int r )
     quick_sort_three_parts ( a, i, r );
 }
 
-int main()
+int binarySearch( std::vector<int>& a, int key, int left ,int right)
 {
-    int64_t num;
-    std::cin >> num;
-
-    int numOut;
-    std::cin >> numOut;
-    std::vector <int> a (numOut, 0);
-
-//    for ( int i = 0; i < num; ++i)
-//    {
-//        a[i] = num - i;
-//    }
-
-    for ( int i = 0; i < numOut ; ++i )
+    while ( left < right )
     {
-        std::cin >> a[i];
+        int mid = left + (right - left) / 2;
+
+        if (a[mid] == key)
+            return mid;
+
+        if (a[mid] > key)
+            right = mid;
+        else
+            left = mid + 1;
     }
-
-    quick_sort_three_parts( a, 0, numOut - 1 );
-
-    int buf;
-    for ( int i = numOut; i < num; ++i )
-    {
-        std::cin >> buf;
-        if ( buf < a[numOut - 1] )
-        {
-//            for ( int i = 0; i < numOut; ++i)
-//            {
-//                std::cout << a[i] << " ";
-//            }
-//            std::cout << "\n ";
-//3 7 4 5 6 1 15 4 2
-              mergeK( a, buf, binarySearch(a, buf, 0, numOut ) ) ;
-//            std::cout << " binarySearch(a, buf, 0, numOut ) = " << binarySearch(a, buf, 0, numOut ) << " \n";
-
-        }
-//        std::cout << buf << " ";
-    }
-//std::cout << " binarySearch(a, buf, 0, numOut ) = " << binarySearch(a, 15, 0, numOut ) << " \n";
-    for ( int i = 0; i < numOut; ++i)
-    {
-        std::cout << a[i] << " ";
-    }
-
-    return 0;
+    return right;
 }
