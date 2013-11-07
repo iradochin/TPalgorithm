@@ -26,12 +26,12 @@
 #include <vector>
 #include <stdint.h>
 
-int binarySearch( std::vector<int>&, int, int ,int );
-void mergeK ( std::vector<int>&, int, size_t );
-//void quick_sort_three_parts ( std::vector<int>&, int, int );
-void quickSort(std::vector<int>&, int, int );
-//void merge( std::vector<int> &, int, int, int );
-//void merge_sort( std::vector<int> &, int, int );
+int binarySearch( std::vector<int>&, int, int ,int );  // Бинарный поиск
+void mergeK ( std::vector<int>&, int, size_t );     // Слияние массива с элементом
+//void quick_sort_three_parts ( std::vector<int>&, int, int ); // Быстрая на три части
+void quickSort(std::vector<int>&, int, int );   // Быстрая
+//void merge( std::vector<int> &, int, int, int );   //Слияние
+//void merge_sort( std::vector<int> &, int, int );   //Сортировка слиянием
 
 int main()
 {
@@ -42,6 +42,7 @@ int main()
     std::cin >> numOut;
     std::vector <int> a (numOut, 0);
 
+// Считываем первые к элементов, затем сортируем их
     for ( int i = 0; i < numOut ; ++i )
     {
         std::cin >> a[i];
@@ -51,6 +52,8 @@ int main()
 //    quick_sort_three_parts( a, 0, numOut - 1 );
     quickSort( a, 0, numOut - 1 );
 
+// Считываем по одному числу и вставляем его в правильное место 
+// результирующего вектора
     int buf;
     for ( int i = numOut; i < num; ++i )
     {
@@ -68,7 +71,9 @@ int main()
 }
 
 void mergeK ( std::vector<int>&a, int k, size_t place )
-{
+{	
+	// Вставка элемента k (без изменения упорядоченности) 
+	// на место place в векторе a
     while ( place < a.size() )
     {
         std::swap( a[place], k );
@@ -160,37 +165,45 @@ void quick_sort_three_parts ( std::vector<int>& a, int l, int r )
     quick_sort_three_parts ( a, i, r );
 }
 
-void merge( std::vector<int> &mas, int l, int m, int r )
+void merge( std::vector<int>& mas, int left, int mid, int right ) 
 {
-    std::vector<int> buffer( r - l + 1 );
-    int pos1 = l;
-    int pos2 = m + 1;
+	// Слияние 2х чаcтей вектора mas [left, mid], [mid+1, right]
+	// при помощи буфера длиной [0, right - left + 1]
+	  
+    std::vector<int> buffer( right - left + 1 );
+    int pos1 = left;        
+    int pos2 = mid + 1;
     int posB = 0;
 
-    while ( pos1 <= m && pos2 <= r ) {
+	// Слияние пока одина из частей вектора не достигла конца.
+    while ( pos1 <= mid && pos2 <= right ) 
+    {
         if ( mas[pos1] <= mas[pos2] )
             buffer[posB++] = mas[pos1++];
         else
             buffer[posB++] = mas[pos2++];
     }
-
-    while ( pos1 <= m )
+    
+    // Если одна из последовательностей не достигла конца, просто дописываем
+    // елементы в конец.
+    while ( pos1 <= mid )
         buffer[posB ++] = mas[pos1 ++];
-
-    while ( pos2 <= r )
+    
+    while ( pos2 <= right )
         buffer[posB ++] = mas[pos2 ++];
-
-    std::copy( buffer.begin(), buffer.end(), (mas.begin() + l) );
+    
+    // Копируе буфер в исходный вектор с границами [left, right] 
+    std::copy( buffer.begin(), buffer.end(), (mas.begin() + left) );
 }
 
-void merge_sort( std::vector<int> &mas, int l, int r )
+void merge_sort( std::vector<int>& mas, int left, int right ) 
 {
-    int m = ( l + r ) >> 1;
-
-    if (l == r)
-        return;
-
-    merge_sort( mas, l, m );
-    merge_sort( mas, (m + 1), r );
-    merge( mas, l, m, r );
+    if (left == right)                    // Если элементов для сортировки
+		return;							  // нет.
+		
+	int mid = ( left + right ) / 2;
+       
+    merge_sort( mas, left, mid );         // Сортировка для левой половины
+    merge_sort( mas, (mid + 1), right );  // Для правой
+    merge( mas, left, mid, right );       // Их слияние
 }
