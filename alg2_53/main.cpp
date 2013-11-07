@@ -1,5 +1,5 @@
 /*
- *        Name: merge1.cpp
+ *        Name: main.cpp
  *  Created on: Nov 7, 2013
  *      Author: roland
  *   Copiright: 2013 All rights reserved
