@@ -23,9 +23,9 @@
 #include <vector>
 //#include <algorithm>
 
-void medianOfThree (std::vector<int>&, int, int );
-int partition ( std::vector <int> &, int, int );
-int kStat ( std::vector<int>&, int, int, int );
+void medianOfThree (std::vector<int>&, int, int ); // Нахождение медианы
+int partition ( std::vector <int> &, int, int ); // Нахождение места элемента
+int kStat ( std::vector<int>&, int, int, int ); //к-я статистика
 
 int main ()
 {
@@ -47,6 +47,10 @@ int main ()
 
 void medianOfThree (std::vector<int>& a, int left, int right)
 {
+	// Установка элементов с индексами left, right, ( left + right ) / 2
+	// В порядке [средний, минимальный, максимальный] на позиции 
+	// [left, ( left + right ) / 2, right]
+	 
     if ( a[( left + right ) / 2] > a[right] )
         std::swap ( a[( left + right ) / 2], a[right] );
     if ( a[left] < a[( left + right ) / 2] )
@@ -56,7 +60,8 @@ void medianOfThree (std::vector<int>& a, int left, int right)
 }
 
 int partition ( std::vector <int> &a, int left, int right )
-{
+{	
+	// Метод прохода двумя итераторами от конца массива к началу.
     medianOfThree( a, left, right );
     int i = right;
     int j = right;
@@ -64,6 +69,7 @@ int partition ( std::vector <int> &a, int left, int right )
 
     while ( j > left )
     {
+        // Ускорение для повторяющихся элементов
         while ( a[left] == a[j] && j > left )
         {
             if ( flag % 2 )
@@ -74,7 +80,7 @@ int partition ( std::vector <int> &a, int left, int right )
             }
             else
             {
-                --j;
+                --j;..
             }
             flag++;
         }
@@ -96,6 +102,7 @@ int partition ( std::vector <int> &a, int left, int right )
 
 int kStat ( std::vector<int>& a, int left, int right, int k )
 {
+	// Модификация quick_sort для поиска к-й статистики
     int l = left;
     int r = right;
     int p = -1;
