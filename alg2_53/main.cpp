@@ -32,9 +32,9 @@ int main ()
 
     for (int i = 0; i < num; ++i )
     {
-        for ( int j = 63; j >=0 ; --j)
-            std::cout << bit ( in[i], j );
-        std::cout << " ";
+//        for ( int j = 63; j >=0 ; --j)
+//            std::cout << bit ( in[i], j );
+//        std::cout << " ";
         std::cout << in[i] << " ";
     }
 
