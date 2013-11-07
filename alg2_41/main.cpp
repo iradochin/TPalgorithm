@@ -100,8 +100,12 @@ void quickSort(std::vector<int>& a, int l, int r)
     int j = r;
     while(i <= j)
     {
-        while(a[i] < x) i++;
-        while(a[j] > x) j--;
+        while(a[i] < x)
+            i++;
+
+        while(a[j] > x)
+            j--;
+
         if(i <= j)
         {
             std::swap(a[i], a[j]);
@@ -162,23 +166,30 @@ void merge( std::vector<int> &mas, int l, int m, int r )
     int pos1 = l;
     int pos2 = m + 1;
     int posB = 0;
+
     while ( pos1 <= m && pos2 <= r ) {
         if ( mas[pos1] <= mas[pos2] )
             buffer[posB++] = mas[pos1++];
         else
             buffer[posB++] = mas[pos2++];
     }
+
     while ( pos1 <= m )
         buffer[posB ++] = mas[pos1 ++];
+
     while ( pos2 <= r )
         buffer[posB ++] = mas[pos2 ++];
+
     std::copy( buffer.begin(), buffer.end(), (mas.begin() + l) );
 }
 
 void merge_sort( std::vector<int> &mas, int l, int r )
 {
     int m = ( l + r ) >> 1;
-    if (l == r) return;
+
+    if (l == r)
+        return;
+
     merge_sort( mas, l, m );
     merge_sort( mas, (m + 1), r );
     merge( mas, l, m, r );
