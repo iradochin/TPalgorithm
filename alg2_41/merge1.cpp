@@ -22,9 +22,9 @@
 #include <cstdio>
 
 void outVector(const std::vector<int>& a);  // Вывод значений
-void merge( std::vector<int>&, int, int, int ); // Слияние упорядоченых множеств
-void merge_sort( std::vector<int>&, int, int ); // Сортировка слиянием
-void mergeK(std::vector<int>&, std::vector<int>&, int, int ); // Слияние 2 массивов до k
+void merge(std::vector<int>&, int, int, int); // Слияние упорядоченых множеств
+void merge_sort(std::vector<int>&, int, int); // Сортировка слиянием
+void mergeK(std::vector<int>&, std::vector<int>&, int, int); // Слияние 2 массивов до k
 
 int main()
 {
