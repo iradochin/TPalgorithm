@@ -23,9 +23,9 @@
 #include <vector>
 //#include <algorithm>
 
-void medianOfThree (std::vector<int>&, int, int );
-int partition ( std::vector <int> &, int, int );
-int kStat ( std::vector<int>&, int, int, int );
+void medianOfThree (std::vector<int>&, int, int ); // Установка медианы в нужное место
+int partition ( std::vector <int> &, int, int ); // Нахождение места элемента
+int kStat ( std::vector<int>&, int, int, int ); //к-я статистика
 
 int main ()
 {
@@ -47,6 +47,11 @@ int main ()
 
 void medianOfThree (std::vector<int>& a, int left, int right)
 {
+    // Установка элементов с индексами left, right, ( left + right ) / 2
+    // В порядке [средний, минимальный, максимальный] на позиции
+    // [left, ( left + right ) / 2, right]
+    // т.е. на месте a[left] становится средний из 3х элементов
+
     if ( a[( left + right ) / 2] > a[right] )
         std::swap ( a[( left + right ) / 2], a[right] );
     if ( a[left] < a[( left + right ) / 2] )
@@ -57,37 +62,29 @@ void medianOfThree (std::vector<int>& a, int left, int right)
 
 int partition ( std::vector <int> &a, int left, int right )
 {
+    // Метод прохода двумя итераторами от конца массива к началу.
     medianOfThree( a, left, right );
     int i = right;
     int j = right;
-    int flag = 0;
+    bool step = false;
 
     while ( j > left )
     {
+        // Ускорение для повторяющихся элементов
         while ( a[left] == a[j] && j > left )
         {
-            if ( flag % 2 )
-            {
-                std::swap(a[i], a[j]);
-                --i;
-                --j;
-            }
+            if ( step )
+                std::swap(a[i--], a[j--]);
             else
-            {
                 --j;
-            }
-            flag++;
+            step=!step;
         }
 
         while ( a[j] < a[left] && j > left )
             --j;
 
         while ( a[j] > a[left] && j > left )
-        {
-            std::swap( a[j], a[i] );
-            --i;
-            --j;
-        }
+            std::swap( a[j--], a[i--] );
     }
     std::swap ( a[left], a[i] );
 
@@ -96,6 +93,7 @@ int partition ( std::vector <int> &a, int left, int right )
 
 int kStat ( std::vector<int>& a, int left, int right, int k )
 {
+    // Модификация quick_sort для поиска к-й статистики
     int l = left;
     int r = right;
     int p = -1;
@@ -109,4 +107,4 @@ int kStat ( std::vector<int>& a, int left, int right, int k )
     }
 
     return a[k];
-    }
+}
