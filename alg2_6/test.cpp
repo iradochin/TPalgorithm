@@ -25,9 +25,11 @@
 #include <algorithm>
 #include <cstring>
 
+// Быстрая сортировка
 void insertion_sort (int*, int, int);
 void quick_sort_three_parts (int*, int, int);
 
+// LSD подсчетом
 inline long digit (long, long);
 void radix(int*, long, long);
 void radixSort(int*, int);
@@ -37,7 +39,7 @@ int main(void)
 {
 //    struct timespec start, end;
 //    clock_gettime (CLOCK_MONOTONIC, &start);
-    int* a = (int*) malloc ( 25000000 * sizeof(int) );
+    int* a = (int*) malloc (25000000 * sizeof(int));
     srand(1);
 
     // Ввод по десять чисел сразу до EOF.
@@ -67,7 +69,7 @@ int main(void)
     while (j < i)
     {
         printf ("%d ", a[j]);
-        j+=10;
+        j += 10;
     }
 
     free (a);
@@ -91,7 +93,7 @@ void insertion_sort (int* a, int left, int right)
     for (int i = left; i < right; ++i)
     {
         int temp = a[i];
-        int j = i-1;
+        int j = i - 1;
         while(j >= 0 && a[j] > temp)
         {
             a[j + 1] = a[j];
@@ -101,7 +103,7 @@ void insertion_sort (int* a, int left, int right)
     }
 }
 
-void quick_sort_three_parts (int *a, int l, int r)
+void quick_sort_three_parts (int* a, int l, int r)
 {
     // Быстрая сортировка с разделением на три части, меньше опорного,
     // равные опорному и больше опорного, быстр на часто повторяющихся числах.
