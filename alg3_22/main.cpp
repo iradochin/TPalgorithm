@@ -49,7 +49,7 @@ void insertDecTree (pTreapNode&,const pTreapNode);
 void insertBinaryTree (pTreapNode&,const int);
 size_t getHeight(const TreapNode*);
 size_t getWidth (const TreapNode*, const size_t);
-int getMaxWidth (const TreapNode*);
+size_t getMaxWidth (const TreapNode*);
 
 int main()
 {
@@ -213,7 +213,7 @@ size_t getWidth (const TreapNode* in, const size_t level)
     return 0;
 }
 
-int getMaxWidth (const TreapNode* root)
+size_t getMaxWidth(const TreapNode* root)
 {
     // Функция возвращает максимальную ширину среди всех слоев дерева.
 
