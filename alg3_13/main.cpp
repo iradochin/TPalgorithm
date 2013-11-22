@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include <queue>
+#include <stack>
 
 struct BinaryNode
 {
@@ -34,6 +35,7 @@ void traverseDFSDownUp(BinaryNode*);        // Обход снизу вверх
 void traverseDFSUpDown(BinaryNode*);        // Обход сверху вниз
 void traverseDFSLeftRight(BinaryNode*);     // Обход слева направо
 void traverseBFS(BinaryNode*);              // Обход в ширину
+void traverseDownUpWithoutRecursion(BinaryNode*); // Обход снизу вверх nonrecursion
 
 int main()
 {
@@ -58,10 +60,11 @@ int main()
     }
 
     // Вывод дерева
-    traverseDFSDownUp(node);
+//    traverseDFSDownUp(node);
 //    traverseDFSLeftRight(node);
 //    traverseDFSUpDown(node);
 //    traverseBFS(node);
+    traverseDownUpWithoutRecursion(node);
 
     return 0;
 }
@@ -107,10 +110,10 @@ void traverseDFSDownUp(BinaryNode* root)
 
 void traverseDFSUpDown(BinaryNode* root)
 {
-    // Вывод элементов методом сверху вниз,
+    // вывод элементов методом сверху вниз,
     // т.е. вначале посещается узел, затем левое и правые поддеревья.
 
-    if (root == NULL)
+    if (root == null)
         return;
 
     std::cout << root->data << " ";
@@ -150,5 +153,34 @@ void traverseBFS(BinaryNode* root)
 
         if( node->right != NULL )
             q.push(node->right);
+    }
+}
+
+void traverseDownUpWithoutRecursion(BinaryNode* root)
+{
+    // вывод элементов методом сверху вниз,
+    // т.е. вначале посещается узел, затем левое и правые поддеревья.
+
+    std::stack<BinaryNode*> one;
+    std::stack<BinaryNode*> two;
+
+    one.push(root);
+    while(!one.empty())
+    {
+        BinaryNode* node = one.top();
+        one.pop();
+        two.push(node);
+
+        if( node->left != NULL )
+            one.push(node->left);
+
+        if( node->right != NULL )
+            one.push(node->right);
+    }
+
+    while(!two.empty())
+    {
+        std::cout << two.top()->data << " ";
+        two.pop();
     }
 }
