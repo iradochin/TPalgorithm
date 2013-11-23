@@ -26,10 +26,10 @@ struct BinaryNode
     BinaryNode* right; // NULL, если нет.
 };
 
-void initBinaryNode (BinaryNode&, int);     // Инициализация элемента
+void initBinaryNode(BinaryNode&, int);     // Инициализация элемента
 
 typedef BinaryNode* pBinaryNode;            // Для передачи указателя по ссылке
-void insertBinaryTree (pBinaryNode&, int);  // Вставка элемента в дерево
+void insertBinaryTree(pBinaryNode&, int);  // Вставка элемента в дерево
 
 void traverseDFSDownUp(BinaryNode*);        // Обход снизу вверх
 void traverseDFSUpDown(BinaryNode*);        // Обход сверху вниз
@@ -50,7 +50,7 @@ int main()
     // Зададим корень
     BinaryNode* node;
     node = new BinaryNode;
-    initBinaryNode( *node, buf );
+    initBinaryNode(*node, buf);
 
     // Вводим оставшиеся значения и добавляем в дерево
     for (size_t i = 1; i < N; ++i)
@@ -69,14 +69,14 @@ int main()
     return 0;
 }
 
-void initBinaryNode (BinaryNode& in, int data)
+void initBinaryNode(BinaryNode& in, int data)
 {
     in.data = data;
     in.left = NULL;
     in.right = NULL;
 }
 
-void insertBinaryTree (pBinaryNode& in, int data)
+void insertBinaryTree(pBinaryNode& in, int data)
 {
     // Рекурсивная вставка элемента в бинарное дерево заданное
     // наивным порядком вставки.
@@ -171,10 +171,10 @@ void traverseDownUpWithoutRecursion(BinaryNode* root)
         one.pop();
         two.push(node);
 
-        if( node->left != NULL )
+        if(node->left != NULL)
             one.push(node->left);
 
-        if( node->right != NULL )
+        if(node->right != NULL)
             one.push(node->right);
     }
 
