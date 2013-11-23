@@ -44,12 +44,12 @@ struct TreapNode
     };
 
 typedef TreapNode* pTreapNode;
-void split (pTreapNode,const int, pTreapNode&, pTreapNode&);
-void insertDecTree (pTreapNode&,const pTreapNode);
+void split(pTreapNode,const int, pTreapNode&, pTreapNode&);
+void insertDecTree(pTreapNode&,const pTreapNode);
 void insertBinaryTree (pTreapNode&,const int);
 size_t getHeight(const TreapNode*);
-size_t getWidth (const TreapNode*, const size_t);
-size_t getMaxWidth (const TreapNode*);
+size_t getWidth(const TreapNode*, const size_t);
+size_t getMaxWidth(const TreapNode*);
 
 int main()
 {
@@ -91,7 +91,7 @@ int main()
     return 0;
 }
 
-void split (pTreapNode in, const int data, pTreapNode& l, pTreapNode& r)
+void split(pTreapNode in, const int data, pTreapNode& l, pTreapNode& r)
 {
     // Разделяет дерево in на два дерева l и r,
     // таким образом, что l содержит все элементы, меньшие data,
@@ -116,12 +116,12 @@ void split (pTreapNode in, const int data, pTreapNode& l, pTreapNode& r)
         {
             // Определяем левое дерево l.
 
-            split (in->right, data, in->right, r);
+            split(in->right, data, in->right, r);
             l = in;
         }
 }
 
-void insertDecTree (pTreapNode& root, const pTreapNode in)
+void insertDecTree(pTreapNode& root, const pTreapNode in)
 {
     // Функция вставляет элемент in в декартово дерево с корнем root
 
@@ -139,7 +139,7 @@ void insertDecTree (pTreapNode& root, const pTreapNode in)
             // им l и r деревья записываем в качестве левого и правого
             // сына добавляемого элемента.
 
-            split (root, in->data, in->left, in->right);
+            split(root, in->data, in->left, in->right);
             root = in;
         }
         else
@@ -156,7 +156,7 @@ void insertDecTree (pTreapNode& root, const pTreapNode in)
             }
 }
 
-void insertBinaryTree (pTreapNode& in, const int data)
+void insertBinaryTree(pTreapNode& in, const int data)
 {
     // Рекурсивная вставка элемента в бинарное дерево заданное
     // наивным порядком вставки.
@@ -195,7 +195,7 @@ size_t getHeight(const TreapNode *root)
         return std::max(hLeft, hRight) + 1;
 }
 
-size_t getWidth (const TreapNode* in, const size_t level)
+size_t getWidth(const TreapNode* in, const size_t level)
 {
     // Функция возвращает ширину слоя level дерева (слои начиная с нуля).
 
@@ -207,7 +207,7 @@ size_t getWidth (const TreapNode* in, const size_t level)
         // Выход из рекурсии, если достигли необходимого слоя.
         return 1;
 
-    if(level > 0)
+    if (level > 0)
         return getWidth(in->left, level - 1) + getWidth(in->right, level - 1);
 
     return 0;
