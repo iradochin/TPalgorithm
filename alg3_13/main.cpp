@@ -6,7 +6,7 @@
  */
 
 /*
- * Дано число N < 106 и последовательность целых
+ * Дано число N < 10^6 и последовательность целых
  * чисел из [-2^31..2^31] длиной N.
  * Требуется построить бинарное дерево, заданное наивным порядком вставки.
  * Т.е., при добавлении очередного числа K в дерево с корнем root,
@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include <queue>
+#include <stack>
 
 struct BinaryNode
 {
@@ -25,15 +26,16 @@ struct BinaryNode
     BinaryNode* right; // NULL, если нет.
 };
 
-void initBinaryNode (BinaryNode&, int);     // Инициализация элемента
+void initBinaryNode(BinaryNode&, int);     // Инициализация элемента
 
 typedef BinaryNode* pBinaryNode;            // Для передачи указателя по ссылке
-void insertBinaryTree (pBinaryNode&, int);  // Вставка элемента в дерево
+void insertBinaryTree(pBinaryNode&, int);  // Вставка элемента в дерево
 
 void traverseDFSDownUp(BinaryNode*);        // Обход снизу вверх
 void traverseDFSUpDown(BinaryNode*);        // Обход сверху вниз
 void traverseDFSLeftRight(BinaryNode*);     // Обход слева направо
 void traverseBFS(BinaryNode*);              // Обход в ширину
+void traverseDownUpWithoutRecursion(BinaryNode*); // Обход снизу вверх nonrecursion
 
 int main()
 {
@@ -48,7 +50,7 @@ int main()
     // Зададим корень
     BinaryNode* node;
     node = new BinaryNode;
-    initBinaryNode( *node, buf );
+    initBinaryNode(*node, buf);
 
     // Вводим оставшиеся значения и добавляем в дерево
     for (size_t i = 1; i < N; ++i)
@@ -58,22 +60,23 @@ int main()
     }
 
     // Вывод дерева
-    traverseDFSDownUp(node);
+//    traverseDFSDownUp(node);
 //    traverseDFSLeftRight(node);
 //    traverseDFSUpDown(node);
 //    traverseBFS(node);
+    traverseDownUpWithoutRecursion(node);
 
     return 0;
 }
 
-void initBinaryNode (BinaryNode& in, int data)
+void initBinaryNode(BinaryNode& in, int data)
 {
     in.data = data;
     in.left = NULL;
     in.right = NULL;
 }
 
-void insertBinaryTree (pBinaryNode& in, int data)
+void insertBinaryTree(pBinaryNode& in, int data)
 {
     // Рекурсивная вставка элемента в бинарное дерево заданное
     // наивным порядком вставки.
@@ -107,7 +110,7 @@ void traverseDFSDownUp(BinaryNode* root)
 
 void traverseDFSUpDown(BinaryNode* root)
 {
-    // Вывод элементов методом сверху вниз,
+    // вывод элементов методом сверху вниз,
     // т.е. вначале посещается узел, затем левое и правые поддеревья.
 
     if (root == NULL)
@@ -150,5 +153,34 @@ void traverseBFS(BinaryNode* root)
 
         if( node->right != NULL )
             q.push(node->right);
+    }
+}
+
+void traverseDownUpWithoutRecursion(BinaryNode* root)
+{
+    // вывод элементов методом сверху вниз,
+    // т.е. вначале посещается узел, затем левое и правые поддеревья.
+
+    std::stack<BinaryNode*> one;
+    std::stack<BinaryNode*> two;
+
+    one.push(root);
+    while(!one.empty())
+    {
+        BinaryNode* node = one.top();
+        one.pop();
+        two.push(node);
+
+        if(node->left != NULL)
+            one.push(node->left);
+
+        if(node->right != NULL)
+            one.push(node->right);
+    }
+
+    while(!two.empty())
+    {
+        std::cout << two.top()->data << " ";
+        two.pop();
     }
 }
