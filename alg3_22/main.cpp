@@ -46,7 +46,8 @@ struct TreapNode
 typedef TreapNode* pTreapNode;
 void split(pTreapNode,const int, pTreapNode&, pTreapNode&);
 void insertDecTree(pTreapNode&,const pTreapNode);
-void insertBinaryTree (pTreapNode&,const int);
+void insertBinaryTree(pTreapNode&,const int);
+void deleteAll(TreapNode*);
 size_t getHeight(const TreapNode*);
 size_t getWidth(const TreapNode*, const size_t);
 size_t getMaxWidth(const TreapNode*);
@@ -85,6 +86,9 @@ int main()
     int two = getMaxWidth(nodeTreap);
 //    int one = getHeight(nodeTreap);
 //    int two = getHeight(nodeBinary);
+
+    deleteAll(nodeBinary);
+    deleteAll(nodeTreap);
 
     std::cout << two - one;
 
@@ -172,6 +176,49 @@ void insertBinaryTree(pTreapNode& in, const int data)
         insertBinaryTree(in->right, data);
     else
         insertBinaryTree(in->left, data);
+}
+
+TreapNode* Merge(TreapNode* left, TreapNode* right)
+{
+    if (left == NULL || right == NULL)
+    {
+        return left == NULL ? right : left;
+    }
+
+    if(left->priority > right->priority)
+    {
+        left->right = Merge(left->right, right);
+        return left;
+    }
+
+    right->left = Merge(left, right->left);
+
+        return right;
+}
+
+TreapNode* Delete(TreapNode* root, int key)
+{
+    TreapNode* splitLeft = NULL;
+    TreapNode* splitRight = NULL;
+    split(root, key - 1, splitLeft, splitRight);
+    TreapNode* splitRightLeft = NULL;
+    TreapNode* splitRightRight = NULL;
+    split(splitRight, key, splitRightLeft, splitRightRight);
+
+    delete splitRightLeft;
+
+    return Merge(splitLeft, splitRightRight);
+}
+
+void deleteAll(TreapNode* root)
+{
+    if (root != NULL)
+        return;
+
+    deleteAll(root->left);
+    deleteAll(root->right);
+
+    delete root;
 }
 
 size_t getHeight(const TreapNode *root)
